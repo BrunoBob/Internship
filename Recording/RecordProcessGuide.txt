@@ -1,0 +1,30 @@
+1. Launch the motion capture software and set the coordinate.
+
+2. Place the marker on the face of the person who will be recorded.
+
+3. Launch the recording script (./script/speech.html) with chrome internet navigator
+.
+4. Give chrome the authrorisation to record video and audio and make sure to the correct camera/micro is selected.
+
+5. Select the file with the speech you want to be read. (the software will display the text line by line, make sure to separate ech sentence by a end-of-line character)
+
+6. Make sure the person is placed in front of the camera and the motion capture device.
+
+7. When everything is ready you can start the script by clicking on the START button.
+
+	- Try to read the displayed text at normal speed and without making pause.
+	
+	- Each time you read a sentence you can validate it by pressing the Enter key.
+
+	- If you made a mistake you can press the left arrow key to return to a previous sentence and read it again
+
+	- If you have trouble reading a sentence you can press the right arrow key to ignore it.
+
+	- When you read all the sentences (nothing is displayed on the screen) you can click on the STOP button and the time log will be downloaded.
+
+8. Click on the Download video button to get the recorded video.
+
+9. Stop the motion capture and dave the data.
+
+10. Put the time log, the recorded video and the motion capture data in the same folder with the date, time and name of the participant on the name of the folder.
+
