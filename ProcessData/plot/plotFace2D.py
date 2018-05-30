@@ -1,21 +1,27 @@
 import csv
 import matplotlib.pyplot as plt
+import numpy as np
 
 FILE_PATH = "../../Data/Test1/"
 START_LINE = 8
-END_LINE = 1000
+END_LINE = 1008
 FREQ = 100
+NB_MARKER = 19
 
 #Read the csv file
 f = open(FILE_PATH + 'motion.csv', 'rb')
 reader = csv.reader(f)
 
 #Get the data
+num = (END_LINE - START_LINE) / FREQ
+X = np.zeros((num,NB_MARKER))
+Y = np.zeros((num,NB_MARKER))
+Z = np.zeros((num,NB_MARKER))
+
 for iter in range(0,START_LINE-1):
 	line = next(reader)
 
-for row in range(0, END_LINE-1 , FREQ):
-	print(row)
+for row in range(START_LINE, END_LINE-1 , FREQ):
 	line = next(reader)
 	while(line[2]==""):
 		line = next(reader)
