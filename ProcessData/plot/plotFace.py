@@ -3,6 +3,7 @@ print("import")
 import csv
 import matplotlib.pyplot as plt
 import numpy as np
+import math
 
 #Plot 2D graph function
 def plot2D():
@@ -20,14 +21,13 @@ def plot2D():
 
 #Plot 3D graph function
 def plot3D():
-	color = ['bo', 'go','ro', 'co','mo', 'yo','ko', 'bv','gv','rv', 'cv','mv', 'yv','kv','gs','rs', 'cs','ms', 'ys','ks',]
 	for graphNb in range(0,num):
 		fig = plt.figure()
-		plt.axis([-150, 50, 1100, 1200])
+		#plt.axis([-150, 50, 1100, 1200])
 		for marker in range(0,NB_MARKER):
-			plt.plot(X[graphNb][marker],Y[graphNb][marker], color[marker])
+			plt.scatter(X[graphNb][marker],Y[graphNb][marker], math.sqrt(Z[graphNb][marker]*Z[graphNb][marker]))
 
-		name = FILE_PATH + "motionPlot2D/" + str(graphNb*FREQ) + ".png"
+		name = FILE_PATH + "motionPlot3D/" + str(graphNb*FREQ) + ".png"
 		print(name)
 		fig.savefig(name)
 		plt.close(fig)
@@ -75,7 +75,7 @@ for row in range(START_LINE, END_LINE-1 , FREQ):
 
 print("Creat graph")
 #plot the data
-plot2D()
+plot3D()
 
 	
 print('end')
