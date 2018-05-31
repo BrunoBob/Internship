@@ -4,6 +4,35 @@ import csv
 import matplotlib.pyplot as plt
 import numpy as np
 
+#Plot 2D graph function
+def plot2D():
+	color = ['bo', 'go','ro', 'co','mo', 'yo','ko', 'bv','gv','rv', 'cv','mv', 'yv','kv','gs','rs', 'cs','ms', 'ys','ks',]
+	for graphNb in range(0,num):
+		fig = plt.figure()
+		plt.axis([-150, 50, 1100, 1200])
+		for marker in range(0,NB_MARKER):
+			plt.plot(X[graphNb][marker],Y[graphNb][marker], color[marker])
+
+		name = FILE_PATH + "motionPlot2D/" + str(graphNb*FREQ) + ".png"
+		print(name)
+		fig.savefig(name)
+		plt.close(fig)
+
+#Plot 3D graph function
+def plot3D():
+	color = ['bo', 'go','ro', 'co','mo', 'yo','ko', 'bv','gv','rv', 'cv','mv', 'yv','kv','gs','rs', 'cs','ms', 'ys','ks',]
+	for graphNb in range(0,num):
+		fig = plt.figure()
+		plt.axis([-150, 50, 1100, 1200])
+		for marker in range(0,NB_MARKER):
+			plt.plot(X[graphNb][marker],Y[graphNb][marker], color[marker])
+
+		name = FILE_PATH + "motionPlot2D/" + str(graphNb*FREQ) + ".png"
+		print(name)
+		fig.savefig(name)
+		plt.close(fig)
+
+
 FILE_PATH = "../../Data/Test1/"
 START_LINE = 8
 END_LINE = 248
@@ -44,19 +73,9 @@ for row in range(START_LINE, END_LINE-1 , FREQ):
 		for iter in range(0,FREQ-1):
 			line = next(reader)
 
-for graphNb in range(0,num):
-	fig = plt.figure()
-	plt.axis([-150, 50, 1100, 1200])
-	plt.plot(X[graphNb][0],Y[graphNb][0], 'bo')
-	plt.plot(X[graphNb][1],Y[graphNb][1], 'go')
-	plt.plot(X[graphNb][2],Y[graphNb][2], 'ro')
-	plt.plot(X[graphNb][3],Y[graphNb][3], 'co')
-	
-	name = FILE_PATH + "motionPlot2D/" + str(graphNb*FREQ) + ".png"
-	print(name)
-	fig.savefig(name)
-	plt.close(fig)
+print("Creat graph")
+#plot the data
+plot2D()
+
 	
 print('end')
-		
-			
