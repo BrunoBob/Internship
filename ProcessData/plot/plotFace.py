@@ -33,11 +33,14 @@ def plot3D():
 		plt.close(fig)
 
 
-FILE_PATH = "../../Data/Test1/"
-START_LINE = 8
-END_LINE = 248
-FREQ = 6
-NB_MARKER = 4
+FILE_PATH = "../../Data/Bruno_1_juin/"
+START_LINE = 581
+END_LINE = 52021
+FREQ = 1000
+NB_MARKER = 19
+REF_CENTER_COL = 2
+REF_LEFT_COL = 1
+REF_UP_COL = 0
 
 print("start")
 
@@ -75,7 +78,7 @@ for row in range(START_LINE, END_LINE-1 , FREQ):
 
 print("Creat graph")
 #plot the data
-plot3D()
+plot2D()
 
 	
 print('end')
