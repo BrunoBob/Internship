@@ -10,7 +10,7 @@ def plot2D():
 	color = ['bo', 'go','ro', 'co','mo', 'yo','ko', 'bv','gv','rv', 'cv','mv', 'yv','kv','gs','rs', 'cs','ms', 'ys','ks',]
 	for graphNb in range(0,num):
 		fig = plt.figure()
-		plt.axis([-150, 50, 1100, 1200])
+		plt.axis([-200, 200, 850, 1300])
 		for marker in range(0,NB_MARKER):
 			plt.plot(X[graphNb][marker],Y[graphNb][marker], color[marker])
 
@@ -23,7 +23,7 @@ def plot2D():
 def plot3D():
 	for graphNb in range(0,num):
 		fig = plt.figure()
-		#plt.axis([-150, 50, 1100, 1200])
+		plt.axis([-100, 100, 1000, 1300])
 		for marker in range(0,NB_MARKER):
 			plt.scatter(X[graphNb][marker],Y[graphNb][marker], math.sqrt(Z[graphNb][marker]*Z[graphNb][marker]))
 
@@ -36,7 +36,7 @@ def plot3D():
 FILE_PATH = "../../Data/Bruno_1_juin/"
 START_LINE = 581
 END_LINE = 52021
-FREQ = 1000
+FREQ = 6
 NB_MARKER = 19
 REF_CENTER_COL = 2
 REF_LEFT_COL = 1
@@ -59,14 +59,15 @@ for iter in range(0,START_LINE-1):
 	line = next(reader)
 
 #Read the data and save them in a matrix
-for row in range(START_LINE, END_LINE-1 , FREQ):
+for row in range(START_LINE, END_LINE-START_LINE , FREQ):
 	line = next(reader)
 	while(line[2]==""):
 		line = next(reader)
-
+	print(row)
 	for axe in range(0,NB_MARKER):
+		
 		if(line[axe*3 +2] != ""):
-			X[row / FREQ - 1][axe] = float(line[axe*3 + 2])
+			X[(row / FREQ) - 1][axe] = float(line[axe*3 + 2])
 		if(line[axe*3 +3] != ""):
 			Y[row / FREQ - 1][axe] = float(line[axe*3 + 3])
 		if(line[axe*3 +4] != ""):
