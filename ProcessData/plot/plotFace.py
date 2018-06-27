@@ -33,18 +33,34 @@ def plot3D():
 		plt.close(fig)
 
 def correctMovement(X, Y, Z, num):
-	max = 0
-	min = 10000
-	v1 = 0
-	for row in range(0,num):
-		dist12 = math.sqrt(((X[row][REF_CENTER_COL]-X[row][REF_UP_COL])**2) +((Y[row][REF_CENTER_COL]-Y[row][REF_UP_COL])**2) +((Z[row][REF_CENTER_COL]-Z[row][REF_UP_COL])**2))
-		if(dist12 > max):
-			max = dist12
-		if(dist12 < min):
-			min = dist12
-	print(min)
-	print(max)
-	print(max-min)
+	Vinit = [X[0][REF_UP_COL] - X[0][REF_CENTER_COL], Y[0][REF_UP_COL] - Y[0][REF_CENTER_COL], Z[0][REF_UP_COL] - Z[0][REF_CENTER_COL]]
+	Vcur = [X[1][REF_UP_COL] - X[1][REF_CENTER_COL], Y[1][REF_UP_COL] - Y[1][REF_CENTER_COL], Z[1][REF_UP_COL] - Z[1][REF_CENTER_COL]]
+	identity = [[1, 0, 0], [0, 1, 0], [0, 0, 1]]
+
+	#print(np.matrix(Vtest))
+	#print(np.matrix(Vcur))
+
+	#normalisation
+	Dinit = np.linalg.norm(Vinit)
+	Dnew = np.linalg.norm(Vcur)
+	Vinit = Vinit / Dinit
+	Vcur = Vcur / Dnew
+
+	cross = np.cross(Vcur,Vinit)
+	dot = np.dot(Vcur,Vinit)
+	norm = np.linalg.norm(cross)
+	ssc = np.array([(0, -cross[2], cross[1]), (cross[2], 0, -cross[0]), (-cross[1], cross[0], 0)])
+	ssc2 = np.matmul(ssc, ssc)
+	
+	#Compute the rotation matrix between vectro Vinit AND vCUR
+	R = (1-dot)/(norm*norm)
+	R = ssc2 * R
+	R = ssc + R
+	R = identity + R
+
+	print(np.matrix(R))
+	print(np.matrix(np.matmul(R,Vcur)*Dinit))
+
 
 FILE_PATH = "../../Data/Bruno_1_juin/"
 START_LINE = 581
