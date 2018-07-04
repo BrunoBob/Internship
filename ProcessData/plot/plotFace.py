@@ -7,9 +7,9 @@ import math
 
 FILE_PATH = "../../Data/Bruno_1_juin/"
 START_LINE = 581
-END_LINE = 583
+END_LINE = 1781
 #52021 1781
-FREQ = 1
+FREQ = 10
 NB_MARKER = 19
 REF_CENTER = 0
 REF_LEFT = 0
@@ -40,9 +40,28 @@ def plot2D(X, Y, Z, num):
 		plt.axis([-250, 250, -200, 120])
 		#plt.axis([-200, 200, 900, 1300])
 		
+		#Plot all marker
 		for marker in range(0,NB_MARKER):
 			plt.plot(X[graphNb][marker],Y[graphNb][marker], color[marker])
 
+		#Draw the mouth
+		plt.plot([X[graphNb][MOUTH_UP], X[graphNb][MOUTH_LEFT]], [Y[graphNb][MOUTH_UP], Y[graphNb][MOUTH_LEFT]],color='r', linewidth=2.0)
+		plt.plot([X[graphNb][MOUTH_UP], X[graphNb][MOUTH_RIGHT]], [Y[graphNb][MOUTH_UP], Y[graphNb][MOUTH_RIGHT]],color='r', linewidth=2.0)
+		plt.plot([X[graphNb][MOUTH_DOWN], X[graphNb][MOUTH_LEFT]], [Y[graphNb][MOUTH_DOWN], Y[graphNb][MOUTH_LEFT]],color='r', linewidth=2.0)
+		plt.plot([X[graphNb][MOUTH_DOWN], X[graphNb][MOUTH_RIGHT]], [Y[graphNb][MOUTH_DOWN], Y[graphNb][MOUTH_RIGHT]],color='r', linewidth=2.0)
+
+		#draw the eyes
+		l1 = (Y[graphNb][EYEBROW_RIGHT] - Y[graphNb][EYE_RIGHT]) /2
+		plt.plot([X[graphNb][EYE_RIGHT], X[graphNb][EYE_RIGHT]+l1], [Y[graphNb][EYE_RIGHT], Y[graphNb][EYEBROW_RIGHT]-3*l1/2],color='r', linewidth=2.0)
+		plt.plot([X[graphNb][EYE_RIGHT], X[graphNb][EYE_RIGHT]-l1], [Y[graphNb][EYE_RIGHT], Y[graphNb][EYEBROW_RIGHT]-3*l1/2],color='r', linewidth=2.0)
+		plt.plot([X[graphNb][EYEBROW_RIGHT], X[graphNb][EYE_RIGHT]+l1], [Y[graphNb][EYEBROW_RIGHT]-l1, Y[graphNb][EYEBROW_RIGHT]-3*l1/2],color='r', linewidth=2.0)
+		plt.plot([X[graphNb][EYEBROW_RIGHT], X[graphNb][EYE_RIGHT]-l1], [Y[graphNb][EYEBROW_RIGHT]-l1, Y[graphNb][EYEBROW_RIGHT]-3*l1/2],color='r', linewidth=2.0)
+		plt.plot([X[graphNb][EYE_LEFT], X[graphNb][EYE_LEFT]+l1], [Y[graphNb][EYE_LEFT], Y[graphNb][EYEBROW_LEFT]-3*l1/2],color='r', linewidth=2.0)
+		plt.plot([X[graphNb][EYE_LEFT], X[graphNb][EYE_LEFT]-l1], [Y[graphNb][EYE_LEFT], Y[graphNb][EYEBROW_LEFT]-3*l1/2],color='r', linewidth=2.0)
+		plt.plot([X[graphNb][EYEBROW_LEFT], X[graphNb][EYE_LEFT]+l1], [Y[graphNb][EYEBROW_LEFT]-l1, Y[graphNb][EYEBROW_LEFT]-3*l1/2],color='r', linewidth=2.0)
+		plt.plot([X[graphNb][EYEBROW_LEFT], X[graphNb][EYE_LEFT]-l1], [Y[graphNb][EYEBROW_LEFT]-l1, Y[graphNb][EYEBROW_LEFT]-3*l1/2],color='r', linewidth=2.0)
+
+		#Save the data in a picture
 		name = FILE_PATH + "motionPlot2D/" + str(graphNb*FREQ) + ".png"
 		print(name)
 		fig.savefig(name)
