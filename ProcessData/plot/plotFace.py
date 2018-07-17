@@ -7,9 +7,9 @@ import math
 
 FILE_PATH = "../../Data/Bruno_1_juin/"
 START_LINE = 581
-END_LINE = 1781
+END_LINE = 52021
 #52021 1781
-FREQ = 10
+FREQ = 6
 NB_MARKER = 19
 REF_CENTER = 0
 REF_LEFT = 0
@@ -167,9 +167,9 @@ reader = csv.reader(f)
 
 #Get the data
 num = (END_LINE - START_LINE) / FREQ
-X = np.zeros((num,NB_MARKER))
-Y = np.zeros((num,NB_MARKER))
-Z = np.zeros((num,NB_MARKER))
+X = np.zeros((num+1,NB_MARKER))
+Y = np.zeros((num+1,NB_MARKER))
+Z = np.zeros((num+1,NB_MARKER))
 
 #process the header
 for iter in range(0,4):
@@ -252,7 +252,7 @@ for row in range(START_LINE, END_LINE , FREQ):
 
 	for axe in range(0,NB_MARKER):
 		if(line[axe*3 +2] != ""):
-			X[((row-START_LINE) / FREQ) ][axe] = float(line[axe*3 + 2])
+			X[(row-START_LINE) / FREQ ][axe] = float(line[axe*3 + 2])
 		if(line[axe*3 +3] != ""):
 			Y[(row-START_LINE) / FREQ][axe] = float(line[axe*3 + 3])
 		if(line[axe*3 +4] != ""):
