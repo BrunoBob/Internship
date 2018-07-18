@@ -158,6 +158,18 @@ def correctMovement(X, Y, Z, num):
 			Y[graphNb][marker] = Y[graphNb][marker] - defY
 			Z[graphNb][marker] = Z[graphNb][marker] - defZ
 
+def saveData(names, X, Y, Z, num):
+	print("Saving the data")
+	f = open(FILE_PATH + "processedMotion.csv", 'wb')
+	writer = csv.writer(f)
+	writer.writerow(names)
+	data = np.zeros((NB_MARKER-3)*3)
+	for line in range(0,num):
+		for marker in range(0, NB_MARKER-3):
+			data[marker*3]=X[line][marker+3]
+			data[marker*3+1]=Y[line][marker+3]
+			data[marker*3+2]=Z[line][marker+3]
+		writer.writerow(data)
 
 print("start")
 
@@ -174,6 +186,13 @@ Z = np.zeros((num+1,NB_MARKER))
 #process the header
 for iter in range(0,4):
 	line = next(reader)
+
+names = np.chararray((NB_MARKER-3)*3,itemsize = 20)
+for name in range(0, NB_MARKER-3):
+	names[name*3] = line[name*3 +11][10:] + 'X'
+	names[name*3+1] = line[name*3 +11][10:] + 'Y'
+	names[name*3+2] = line[name*3 +11][10:] + 'Z'
+print(names)
 
 markerCheck = 0
 for marker in range(0, NB_MARKER):
@@ -263,8 +282,8 @@ for row in range(START_LINE, END_LINE , FREQ):
 
 print("Creat graph")
 #plot the data
-correctMovement(X,Y,Z,num)
-plot2D(X,Y,Z,num)
-
+#correctMovement(X,Y,Z,num)
+#plot2D(X,Y,Z,num)
+saveData(names,X,Y,Z,num)
 	
 print('end')
