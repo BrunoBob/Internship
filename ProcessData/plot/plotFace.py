@@ -9,7 +9,7 @@ FILE_PATH = "../../Data/Bruno_1_juin/"
 START_LINE = 581
 END_LINE = 52021
 #52021 1781
-FREQ = 6
+FREQ = 10
 NB_MARKER = 19
 REF_CENTER = 0
 REF_LEFT = 0
@@ -282,7 +282,7 @@ for row in range(START_LINE, END_LINE , FREQ):
 
 print("Creat graph")
 #plot the data
-#correctMovement(X,Y,Z,num)
+correctMovement(X,Y,Z,num)
 #plot2D(X,Y,Z,num)
 saveData(names,X,Y,Z,num)
 	
