@@ -1,4 +1,5 @@
 import pandas as pd
+import csv
 from matplotlib import pyplot as plt
 import numpy as np
 import math
@@ -29,14 +30,24 @@ def printDataChunk(data, labels):
         plt.tight_layout()
         plt.show()
 
-df = pd.read_csv(
+""" df = pd.read_csv(
     #filepath_or_buffer='../../Data/iris/iris.csv',
     filepath_or_buffer='../../Data/Bruno_1_juin/processedMotion.csv',
     header=None,
-    sep=',')
+    sep=',') """
 
-labels = df.ix[0,:].values
-X = df.ix[2:,:].values
+
+f = open('../../Data/Bruno_1_juin/processedMotion.csv', 'rb')
+num_lines = sum(1 for line in open('../../Data/Bruno_1_juin/processedMotion.csv'))
+
+reader = csv.reader(f)
+labels = next(reader)
+next(reader)
+X = np.zeros((num_lines,MARKER*3))
+for i in range(2,num_lines):
+    X[i,:] = next(reader)
+    
+#X = df.ix[2:,:].values
 
 
 num = (X.shape[0]/FPS) * TIME
@@ -49,7 +60,7 @@ for i in range(0,num-1):
         X_time[i][j*MARKER*3:(j+1)*MARKER*3] = X[iter]
         iter += FREQ
 
-#printDataChunk(X_time[0], labels)
+printDataChunk(X_time[0], labels)
 
 """ X_std = StandardScaler().fit_transform(X_time)
 
