@@ -1,4 +1,4 @@
-import pandas as pd
+#import pandas as pd
 import csv
 from matplotlib import pyplot as plt
 import numpy as np
@@ -46,7 +46,7 @@ next(reader)
 X = np.zeros((num_lines,MARKER*3))
 for i in range(2,num_lines):
     X[i,:] = next(reader)
-    
+
 #X = df.ix[2:,:].values
 
 
