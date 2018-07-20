@@ -13,15 +13,16 @@ MARKER = 16
 def printDataChunk(data, labels):
     X = np.zeros((MARKER,TIME*FREQ))
     Y = np.zeros((MARKER,TIME*FREQ))
+    color = ['bo', 'go','ro', 'co','mo', 'yo','ko', 'bv','gv','rv', 'cv','mv', 'yv','kv','gs','rs', 'cs']
     for i in range(0,MARKER):
         for j in range(TIME*FREQ):
-            X[i][j] = data[MARKER*j*3 + i]
-            Y[i][j] = data[MARKER*j*3 + i +1]
+            X[i][j] = data[MARKER*j*3 + i*3]
+            Y[i][j] = data[MARKER*j*3 + i*3 +1]
 
     with plt.style.context('seaborn-whitegrid'):
-        plt.figure(figsize=(1, 1))
-        plt.plot(X[0,:],Y[0,:], 'k', label = labels[0])
-        plt.plot(X[1,:],Y[1,:], 'k', label = labels[3])
+        plt.figure(figsize=(6, 6))
+        for marker in range(0,MARKER):
+            plt.plot(X[marker,:],Y[marker,:], color[marker], label = labels[marker*3])
         plt.ylabel('Y position')
         plt.xlabel('X position')
         plt.legend(loc='best')
@@ -48,7 +49,7 @@ for i in range(0,num-1):
         X_time[i][j*MARKER*3:(j+1)*MARKER*3] = X[iter]
         iter += FREQ
 
-printDataChunk(X_time[0], labels)
+#printDataChunk(X_time[0], labels)
 
 """ X_std = StandardScaler().fit_transform(X_time)
 
