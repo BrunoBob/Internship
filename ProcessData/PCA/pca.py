@@ -10,6 +10,7 @@ FREQ = 12
 FPS = 12
 TIME = 1
 MARKER = 16
+COMP = 50
 
 def printDataChunk(data, labels):
     X = np.zeros((MARKER,TIME*FREQ))
@@ -21,7 +22,7 @@ def printDataChunk(data, labels):
             Y[i][j] = data[MARKER*j*3 + i*3 +1]
 
     with plt.style.context('seaborn-whitegrid'):
-        plt.figure(figsize=(6, 6))
+        plt.figure(figsize=(10, 10))
         for marker in range(0,MARKER):
             plt.plot(X[marker,:],Y[marker,:], color[marker], label = labels[marker*3])
         plt.ylabel('Y position')
@@ -30,59 +31,58 @@ def printDataChunk(data, labels):
         plt.tight_layout()
         plt.show()
 
-""" df = pd.read_csv(
-    #filepath_or_buffer='../../Data/iris/iris.csv',
-    filepath_or_buffer='../../Data/Bruno_1_juin/processedMotion.csv',
-    header=None,
-    sep=',') """
-
-
+#read the data
 f = open('../../Data/Bruno_1_juin/processedMotion.csv', 'rb')
 num_lines = sum(1 for line in open('../../Data/Bruno_1_juin/processedMotion.csv'))
 
+#put data in matrix
 reader = csv.reader(f)
 labels = next(reader)
 next(reader)
 print(num_lines)
-X = np.zeros((num_lines,MARKER*3))
+X_temp = np.zeros((num_lines,MARKER*3))
 for i in range(2,num_lines):
-    X[i,:] = next(reader)
+    X_temp[i,:] = next(reader)[0:MARKER*3]
 
-#X = df.ix[2:,:].values
+X = X_temp[2:,:]
 
-
+#Put data in the right format (sequence of movement)
 num = (X.shape[0]/FPS) * TIME
 size = MARKER*3*FREQ
-X_time = np.zeros((num+1,MARKER*3*FREQ))
-print(X_time.shape)
+X_std = np.zeros((num+1,MARKER*3*FREQ))
+print(X_std.shape)
+
 iter = 0
 for i in range(0,num-1):
-    for j in range(0,FREQ-1):
-       	X_time[i][j*MARKER*3:(j+1)*MARKER*3] = X[iter]
+    for j in range(0,FREQ):
+       	X_std[i][j*MARKER*3:(j+1)*MARKER*3] = X[iter]
         iter += FPS/FREQ
 	#print(iter)
 
-printDataChunk(X_time[0], labels)
+#printDataChunk(X_std[100], labels)
 
-X_std = StandardScaler().fit_transform(X_time)
-#print(X_time)
-sklearn_pca = sklearnPCA() #n_components=2)
-sklearn_pca.fit(X_std)
-print(sklearn_pca.score(X_std))
-#print(sklearn_pca.get_covariance())
+sklearn_pca = sklearnPCA(n_components=COMP) 
+sklearn_pca =sklearn_pca.fit(X_std)
+
 #print(sklearn_pca.explained_variance_ratio_)
 Y = sklearn_pca.transform(X_std)
-#print(Y)
+#print(Y[0])
+
 Xnew =  sklearn_pca.inverse_transform(Y)
-printDataChunk(Xnew[0], labels)
-"""cum_var_exp = np.cumsum(sklearn_pca.explained_variance_ratio_)
+#printDataChunk(Xnew[100], labels)
+
+Y_test = np.random.rand(2,50) 
+X_test =  sklearn_pca.inverse_transform(Y_test)
+printDataChunk(X_test[0], labels)
+
+cum_var_exp = np.cumsum(sklearn_pca.explained_variance_ratio_)
 with plt.style.context('seaborn-whitegrid'):
-    plt.figure(figsize=(6, size))
-    plt.bar(range(size), sklearn_pca.explained_variance_ratio_, alpha=0.5, align='center',label='individual explained variance')
-    plt.step(range(size), cum_var_exp, where='mid',label='cumulative explained variance')
+    plt.figure(figsize=(6, 10))
+    plt.bar(range(COMP), sklearn_pca.explained_variance_ratio_, alpha=0.5, align='center',label='individual explained variance')
+    plt.step(range(COMP), cum_var_exp, where='mid',label='cumulative explained variance')
     plt.ylabel('Explained variance ratio')
     plt.xlabel('Principal components')
     plt.legend(loc='best')
     plt.tight_layout()
     #plt.show()
-    fig.savefig("test")"""
+    
