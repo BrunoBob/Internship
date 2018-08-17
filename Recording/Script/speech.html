@@ -16,17 +16,31 @@
 			left: 50%;
 			transform:translate(-50%, -50%);
 		}
+		#container {
+    		position: relative;
+		}
+		#videoElement {
+    		width: 400px;
+    		height: 300px;
+    		background-color: #666;
+			position: absolute;
+    		top: 0px;
+    		right: 0px;
+		}
+</style>
         </style>
 	
 </head>
 
 <body>
- 	
+	<div id="container">
+		<video autoplay="true" id="videoElement"></video>
+	</div>
 	<p><input type="file" id="fileItem" name="fileItem"/></p>
 	<p><button type="button" id="begin" name="start">START</button></p>
 	<p><button type="button" id="end" name="stop">STOP</button></p>
 	<p><button type="button" id="getVideo" name="video">Download Video</button></p>
-	<video width="240" height="180" autoplay></video>
+	
 	<h1 id="toRead"></h1>
 	<script type="text/javascript" src="speech.js"></script>
 

@@ -59,7 +59,7 @@ for i in range(0,num-1):
         iter += FPS/FREQ
 	#print(iter)
 
-#printDataChunk(X_std[100], labels)
+printDataChunk(X_std[100], labels)
 
 sklearn_pca = sklearnPCA(n_components=COMP) 
 sklearn_pca =sklearn_pca.fit(X_std)
@@ -69,11 +69,11 @@ Y = sklearn_pca.transform(X_std)
 #print(Y[0])
 
 Xnew =  sklearn_pca.inverse_transform(Y)
-#printDataChunk(Xnew[100], labels)
+printDataChunk(Xnew[100], labels)
 
 Y_test = np.random.rand(2,50) 
 X_test =  sklearn_pca.inverse_transform(Y_test)
-printDataChunk(X_test[0], labels)
+#printDataChunk(X_test[0], labels)
 
 cum_var_exp = np.cumsum(sklearn_pca.explained_variance_ratio_)
 with plt.style.context('seaborn-whitegrid'):
@@ -84,5 +84,5 @@ with plt.style.context('seaborn-whitegrid'):
     plt.xlabel('Principal components')
     plt.legend(loc='best')
     plt.tight_layout()
-    #plt.show()
+    plt.show()
     

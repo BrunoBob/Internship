@@ -15,6 +15,7 @@ if (!!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia)) {
 var speech, tab, iter = -1, textFile = null, logTime = new Array(), fileName, timeSave, startTime, endTime;
 var recordedChunks = [];
 var mediaRecorder;
+var video = document.querySelector("#videoElement");
 
 const constraints = {
   video: true,audio: true
@@ -22,6 +23,7 @@ const constraints = {
 
 
 function handleSuccess(stream) {
+	video.srcObject = stream;
 	var options = {audioBitsPerSecond : 128000, videoBitsPerSecond : 2500000 ,mimeType: "video/webm;codecs=vp8,opus"};
 	mediaRecorder = new MediaRecorder(stream, options);
 	mediaRecorder.ondataavailable = handleDataAvailable;
