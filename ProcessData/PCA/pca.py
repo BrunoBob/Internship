@@ -6,13 +6,13 @@ import math
 from sklearn.preprocessing import StandardScaler
 from sklearn.decomposition import PCA as sklearnPCA
 
-FREQ = 12
-FPS = 12
-TIME = 1
+FREQ = 12 #number of iter for 1 second
+FPS = 12 #fps of input data
+TIME = 1 #number of seconds
 MARKER = 16
 COMP = 50
 
-def printDataChunk(data, labels):
+def printDataChunk(data, labels,name):
     X = np.zeros((MARKER,TIME*FREQ))
     Y = np.zeros((MARKER,TIME*FREQ))
     color = ['bo', 'go','ro', 'co','mo', 'yo','ko', 'bv','gv','rv', 'cv','mv', 'yv','kv','gs','rs', 'cs']
@@ -22,14 +22,18 @@ def printDataChunk(data, labels):
             Y[i][j] = data[MARKER*j*3 + i*3 +1]
 
     with plt.style.context('seaborn-whitegrid'):
-        plt.figure(figsize=(10, 10))
-        for marker in range(0,MARKER):
-            plt.plot(X[marker,:],Y[marker,:], color[marker], label = labels[marker*3])
-        plt.ylabel('Y position')
-        plt.xlabel('X position')
-        plt.legend(loc='best')
-        plt.tight_layout()
-        plt.show()
+        for iter in range(0,TIME*FREQ):
+            plt.figure(figsize=(10, 10))
+            plt.axis([-100, 100, -200, 0])
+            for marker in range(0,MARKER):
+				plt.plot(X[marker,iter],Y[marker,iter], color[marker], label = labels[marker*3])
+            plt.ylabel('Y position')
+            plt.xlabel('X position')
+            plt.legend(loc='best')
+            plt.tight_layout()
+
+            plt.savefig("graph/graph"+name + str(iter))
+            plt.close()
 
 #read the data
 f = open('../../Data/Bruno_1_juin/processedMotion.csv', 'rb')
@@ -59,9 +63,9 @@ for i in range(0,num-1):
         iter += FPS/FREQ
 	#print(iter)
 
-printDataChunk(X_std[100], labels)
+printDataChunk(X_std[100], labels,"before")
 
-sklearn_pca = sklearnPCA(n_components=COMP) 
+sklearn_pca = sklearnPCA(n_components=COMP)
 sklearn_pca =sklearn_pca.fit(X_std)
 
 #print(sklearn_pca.explained_variance_ratio_)
@@ -69,9 +73,9 @@ Y = sklearn_pca.transform(X_std)
 #print(Y[0])
 
 Xnew =  sklearn_pca.inverse_transform(Y)
-printDataChunk(Xnew[100], labels)
+printDataChunk(Xnew[100], labels, "after")
 
-Y_test = np.random.rand(2,50) 
+Y_test = np.random.rand(2,50)
 X_test =  sklearn_pca.inverse_transform(Y_test)
 #printDataChunk(X_test[0], labels)
 
@@ -84,5 +88,4 @@ with plt.style.context('seaborn-whitegrid'):
     plt.xlabel('Principal components')
     plt.legend(loc='best')
     plt.tight_layout()
-    plt.show()
-    
+    plt.savefig("graph/bar")

@@ -1,0 +1,1 @@
+convert -delay $2 -loop 0 $1*.png $1.gif
