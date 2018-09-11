@@ -5,10 +5,10 @@ import matplotlib.pyplot as plt
 import numpy as np
 import math
 
-FILE_PATH = "../../Data/Bruno_1_juin/"
-START_LINE = 581
-END_LINE = 52021
-#52021 1781
+FILE_PATH = "../../Data/Alexandre/"
+START_LINE = 2330
+END_LINE = 36648
+#581 52021 1781
 FREQ = 2
 NB_MARKER = 19
 REF_CENTER = 0
@@ -37,7 +37,7 @@ def plot2D(X, Y, Z, num):
 
 	for graphNb in range(0,num):
 		fig = plt.figure()
-		plt.axis([-250, 250, -200, 120])
+		plt.axis([-0.35, 0.85, -0.1, 1.1])
 		#plt.axis([-200, 200, 900, 1300])
 		
 		#Plot all marker
@@ -90,7 +90,21 @@ def correctMovement(X, Y, Z, num):
 	Vinit2 = [X[0][REF_LEFT] - X[0][REF_CENTER], Y[0][REF_LEFT] - Y[0][REF_CENTER], Z[0][REF_LEFT] - Z[0][REF_CENTER]]
 	Dinit2 = np.linalg.norm(Vinit2)
 	Vinit2 = Vinit2 / Dinit2
+
+	maxX = maxY = maxZ = -10000000
+	minX = minY = minZ = 10000000
 	
+	#remove noise
+	for graphNb in range(2,num):
+		for marker in range(0,NB_MARKER):
+			if((X[graphNb][marker] - X[graphNb-1][marker]) < -100 or (X[graphNb][marker] - X[graphNb-1][marker]) > 100):
+				X[graphNb][marker] = X[graphNb-1][marker]
+			if((Y[graphNb][marker] - Y[graphNb-1][marker]) < -100 or (Y[graphNb][marker] - Y[graphNb-1][marker]) > 100):
+				Y[graphNb][marker] = Y[graphNb-1][marker]
+			if((Z[graphNb][marker] - Z[graphNb-1][marker]) < -100 or (Z[graphNb][marker] - Z[graphNb-1][marker]) > 100):
+				Z[graphNb][marker] = Z[graphNb-1][marker]
+	
+
 	#for each image
 	for graphNb in range(1,num):
 
@@ -157,6 +171,28 @@ def correctMovement(X, Y, Z, num):
 			X[graphNb][marker] = X[graphNb][marker] - defX
 			Y[graphNb][marker] = Y[graphNb][marker] - defY
 			Z[graphNb][marker] = Z[graphNb][marker] - defZ
+
+		#search for max and min
+		for marker in range(0,NB_MARKER):
+			if(X[graphNb][marker] > maxX):
+				maxX = X[graphNb][marker]
+			if(X[graphNb][marker] < minX):
+				minX = X[graphNb][marker]
+			if(Y[graphNb][marker] > maxY):
+				maxY = Y[graphNb][marker]
+			if(Y[graphNb][marker] < minY):
+				minY = Y[graphNb][marker]
+			if(Z[graphNb][marker] > maxZ):
+				maxZ = Z[graphNb][marker]
+			if(Z[graphNb][marker] < minZ):
+				minZ = Z[graphNb][marker]
+	
+	#scale the data between 0 and 1
+	for graphNb in range(1,num):
+		for marker in range(0,NB_MARKER):
+			X[graphNb][marker] = ((X[graphNb][marker] - minX)/ (maxX-minX))*0.5
+			Y[graphNb][marker] = (Y[graphNb][marker] - minY)/ (maxY-minY)
+			Z[graphNb][marker] = (Z[graphNb][marker] - minZ)/ (maxZ-minZ)
 
 def saveData(names, X, Y, Z, num):
 	print("Saving the data")
