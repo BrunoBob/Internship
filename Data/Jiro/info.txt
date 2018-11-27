@@ -1,0 +1,6 @@
+Record Start 	13:18:56:909
+Record stop	13:24:33:959
+Record time	00:05:37:059
+
+Motion first	13118
+Motion End	53568

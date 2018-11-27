@@ -1,8 +1,0 @@
-Record start : 	14:39:51:348
-Record End :	14:47:04:861
-Record time :	00:07:13:513
-Motion start :	14:39:46:573
-Motion End :	14:47:16:715
-Motion time :	00:07:30:142
-Motion firt line : 	581
-Motion last line : 	52021

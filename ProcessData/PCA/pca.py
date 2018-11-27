@@ -6,11 +6,14 @@ import math
 from sklearn.preprocessing import StandardScaler
 from sklearn.decomposition import PCA as sklearnPCA
 
-FREQ = 30 #number of iter for 1 second
+#Perform a PCA to reduce the number of dimension and generate motion file with random noise
+#Input : A csv processed file obtained with plotFace.py
+
+FREQ = 30 #number of iteration for 1 second
 FPS = 60 #fps of input data
-TIME = 10 #number of seconds
-MARKER = 16
-COMP = 50
+TIME = 2 #number of seconds of motion
+MARKER = 16 #number of marker
+COMP = 7 #number of principal components kept
 
 REF_CENTER = 0
 REF_LEFT = 0
@@ -32,6 +35,7 @@ MOUTH_UP = 0
 MOUTH_DOWN = 0
 CHIN = 0
 
+#print the graph for each frame of a given sequence
 def printDataChunk(data, labels,name):
     X = np.zeros((MARKER,TIME*FREQ))
     Y = np.zeros((MARKER,TIME*FREQ))
@@ -44,7 +48,7 @@ def printDataChunk(data, labels,name):
     with plt.style.context('seaborn-whitegrid'):
         for iter in range(0,TIME*FREQ):
             plt.figure(figsize=(10, 10))
-            plt.axis([-100, 100, -200, 0])
+            plt.axis([0.2, 0.6, 0, 0.6])
             for marker in range(0,MARKER):
 				plt.plot(X[marker,iter],Y[marker,iter], color[marker], label = labels[marker*3])
 
@@ -73,6 +77,8 @@ def printDataChunk(data, labels,name):
             plt.savefig("graph/graph"+name + str(iter))
             plt.close()
 
+#save a sequence in a csv file
+#Format : time marker1X marker1Y marker1Z marker2X ...
 def saveData(labels, data, name):
     f = open(name, 'wb')
     writer = csv.writer(f)
@@ -88,13 +94,14 @@ def saveData(labels, data, name):
 
 
 #read the data
-f = open('../../Data/Bruno_1_juin/processedMotion.csv', 'rb')
-num_lines = sum(1 for line in open('../../Data/Bruno_1_juin/processedMotion.csv'))
+f = open('../../Data/Jiro/processedMotion.csv', 'rb')
+num_lines = sum(1 for line in open('../../Data/Jiro/processedMotion.csv'))
 
 #put data in matrix
 reader = csv.reader(f)
 labels = next(reader)
 
+#check presence of each marker
 for marker in range(0, MARKER):
 	if(labels[marker*3] == "ForeheadRightX"):
 		FOREHEAD_RIGHT = marker
@@ -152,30 +159,29 @@ for i in range(0,num-1):
         iter += FPS/FREQ
 	#print(iter)
 
-#printDataChunk(X_std[10], labels,"before")
-saveData(labels, X_std[10], "movement.csv")
 
-#sklearn_pca = sklearnPCA(n_components=COMP)
-#sklearn_pca =sklearn_pca.fit(X_std)
+#Compute the PCA
+sklearn_pca = sklearnPCA(n_components=COMP)
+sklearn_pca =sklearn_pca.fit(X_std)
 
-#print(sklearn_pca.explained_variance_ratio_)
-#Y = sklearn_pca.transform(X_std)
-#print(Y[0])
+#Transform the data
+Y = sklearn_pca.transform(X_std)
 
-#Xnew =  sklearn_pca.inverse_transform(Y)
-#printDataChunk(Xnew[10], labels, "after")
 
-#Y_test = np.random.rand(2,50)
-#X_test =  sklearn_pca.inverse_transform(Y_test)
-#printDataChunk(X_test[0], labels, "generated")
+#example of generation of motion
+Y_test = np.random.rand(2,COMP)
+X_test =  sklearn_pca.inverse_transform(Y_test)
+printDataChunk(X_test[0], labels, "generated")
 
-# cum_var_exp = np.cumsum(sklearn_pca.explained_variance_ratio_)
-# with plt.style.context('seaborn-whitegrid'):
-#     plt.figure(figsize=(6, 10))
-#     plt.bar(range(COMP), sklearn_pca.explained_variance_ratio_, alpha=0.5, align='center',label='individual explained variance')
-#     plt.step(range(COMP), cum_var_exp, where='mid',label='cumulative explained variance')
-#     plt.ylabel('Explained variance ratio')
-#     plt.xlabel('Principal components')
-#     plt.legend(loc='best')
-#     plt.tight_layout()
-#     plt.savefig("graph/bar")
+
+#Print the explained variance for each composant
+cum_var_exp = np.cumsum(sklearn_pca.explained_variance_ratio_)
+with plt.style.context('seaborn-whitegrid'):
+     plt.figure(figsize=(6, 10))
+     plt.bar(range(COMP), sklearn_pca.explained_variance_ratio_, alpha=0.5, align='center',label='individual explained variance')
+     plt.step(range(COMP), cum_var_exp, where='mid',color ='r',label='cumulative explained variance')
+     plt.ylabel('Explained variance ratio')
+     plt.xlabel('Principal components')
+     plt.legend(loc='best')
+     plt.tight_layout()
+     plt.savefig("graph/bar")

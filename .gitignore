@@ -4,6 +4,9 @@
 *.mp4
 *.MTS
 *.webm
+*.wav
+*.wave
+*/graph*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

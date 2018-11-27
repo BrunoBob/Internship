@@ -1,0 +1,6 @@
+Record Start 	17:13:28:673
+Record stop	17:22:39:105
+Record time	00:09:11:432
+
+Motion first Line	29296
+Motion Last Line	95468

@@ -1,0 +1,22 @@
+n_nodes_inpl = 2880  #input
+n_nodes_hl1  = 720  #encoder
+n_nodes_hl2  = 180  #encoder
+n_nodes_hl3  = 50  #encoder
+n_nodes_hl4  = 180  #decoder
+n_nodes_hl5  = 720  #decoder
+n_nodes_outl = 2880  #decoder
+
+batch_size = 1 # how many images to use together for training
+hm_epochs = 10  # how many times to go through the entire dataset
+
+Epoch 0 / 10 loss: 116073042380830.25
+Epoch 1 / 10 loss: 0.2588717674589134
+Epoch 2 / 10 loss: 0.2587174877317011
+Epoch 3 / 10 loss: 0.25855238085932797
+Epoch 4 / 10 loss: 0.2584161672384653
+Epoch 5 / 10 loss: 0.25829556998178305
+Epoch 6 / 10 loss: 0.25819105422124267
+Epoch 7 / 10 loss: 0.2580964567805495
+Epoch 8 / 10 loss: 0.25801579399012553
+Epoch 9 / 10 loss: 0.25794342639346723
+

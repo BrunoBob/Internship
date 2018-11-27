@@ -1,6 +1,0 @@
-Record Start :	17:09:24:536
-Data start : 	17:13:28:145
-Data End :	17:22:46:097
-Data time :	00:09:17:952
-
-Time to remove :	00:04:03:609 

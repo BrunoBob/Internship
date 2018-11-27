@@ -5,11 +5,18 @@ import matplotlib.pyplot as plt
 import numpy as np
 import math
 
-FILE_PATH = "../../Data/Alexandre/"
-START_LINE = 2330
-END_LINE = 36648
-#581 52021 1781
-FREQ = 2
+#This script take the raw motion csv file as input and write a csv file of the processed data
+#The script remove the noise, remove the head motion and scale the data between 0 and 1 in each axis
+#To use just type : python plotFace.py in the terminal
+
+#To modify
+FILE_PATH = "../../Data/Jiro/" #Path of the input data file
+START_LINE = 13118 # First processed line of the input data file
+END_LINE = 13361 # Last processed line of the input data
+FREQ = 4 #Number of frame passed at each iteration (120 fps data input with FREQ = 2 result in 60 fps data output)
+
+#Used to reference the position of each marker in the data file
+#If you want to add marker add a constant with the name of the marker
 NB_MARKER = 19
 REF_CENTER = 0
 REF_LEFT = 0
@@ -32,17 +39,17 @@ MOUTH_DOWN = 0
 CHIN = 0
 
 #Plot 2D graph function
-def plot2D(X, Y, Z, num):
+def plot2D(X, Y, Z, num, labels):
 	color = ['bo', 'go','ro', 'co','mo', 'yo','ko', 'bv','gv','rv', 'cv','mv', 'yv','kv','gs','rs', 'cs','ms', 'ys','ks',]
 
 	for graphNb in range(0,num):
-		fig = plt.figure()
-		plt.axis([-0.35, 0.85, -0.1, 1.1])
+		fig = plt.figure(figsize=(10, 10))
+		plt.axis([-0.3, 0.8, -0.1, 1.1])
 		#plt.axis([-200, 200, 900, 1300])
 		
 		#Plot all marker
 		for marker in range(0,NB_MARKER):
-			plt.plot(X[graphNb][marker],Y[graphNb][marker], color[marker])
+			plt.plot(X[graphNb][marker],Y[graphNb][marker], color[marker], label = labels[marker*3])
 
 		#Draw the mouth
 		plt.plot([X[graphNb][MOUTH_UP], X[graphNb][MOUTH_LEFT]], [Y[graphNb][MOUTH_UP], Y[graphNb][MOUTH_LEFT]],color='r', linewidth=2.0)
@@ -61,10 +68,15 @@ def plot2D(X, Y, Z, num):
 		plt.plot([X[graphNb][EYEBROW_LEFT], X[graphNb][EYE_LEFT]+l1], [Y[graphNb][EYEBROW_LEFT]-l1, Y[graphNb][EYEBROW_LEFT]-3*l1/2],color='r', linewidth=2.0)
 		plt.plot([X[graphNb][EYEBROW_LEFT], X[graphNb][EYE_LEFT]-l1], [Y[graphNb][EYEBROW_LEFT]-l1, Y[graphNb][EYEBROW_LEFT]-3*l1/2],color='r', linewidth=2.0)
 
+		plt.ylabel('Y position')
+		plt.xlabel('X position')
+		plt.legend(loc='best')
+		plt.tight_layout()
+
 		#Save the data in a picture
 		name = FILE_PATH + "motionPlot2D/" + str(graphNb*FREQ) + ".png"
 		print(name)
-		fig.savefig(name)
+		plt.savefig(name)
 		plt.close(fig)
 
 #Plot 3D graph function
@@ -230,6 +242,12 @@ for name in range(0, NB_MARKER-3):
 	names[name*3+2] = line[name*3 +11][10:] + 'Z'
 print(names)
 
+labels = np.chararray((NB_MARKER)*3,itemsize = 20)
+for name in range(0, NB_MARKER):
+	labels[name*3] = line[name*3 +2][10:] + 'X'
+	labels[name*3+1] = line[name*3 +2][10:] + 'Y'
+	labels[name*3+2] = line[name*3 +2][10:] + 'Z'
+
 markerCheck = 0
 for marker in range(0, NB_MARKER):
 	if(line[marker*3 + 2] == "MarkerSet:RefUp"):
@@ -293,7 +311,7 @@ for marker in range(0, NB_MARKER):
 if(markerCheck == NB_MARKER):
 	print("All marker found")
 else:
-	print("Some marker missing")
+	print("Some marker missing : ", markerCheck)
 
 #Go to fisrt line of data
 for iter in range(iter+1,START_LINE):
@@ -316,10 +334,18 @@ for row in range(START_LINE, END_LINE , FREQ):
 		for iter in range(0,FREQ-1):
 			line = next(reader)
 
-print("Creat graph")
-#plot the data
+
+
+#Main functions
+
+#Remove noise and correct movement of the head (tilt, yaw)
 correctMovement(X,Y,Z,num)
-#plot2D(X,Y,Z,num)
+
+#Plot each frame of movement in the motionPlot2D/ folder inside the data folder processed
+#(Remove for fast processing and use to check data only)
+#plot2D(X,Y,Z,num,labels)
+
+#Save the processed data in the file processedMotion.csv inside the data folder processed
 saveData(names,X,Y,Z,num)
 	
 print('end')
